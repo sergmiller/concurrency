@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B92FDB471C98594000CBFE6F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B92FDB461C98594000CBFE6F /* main.cpp */; };
+		B92FDB501C985B5200CBFE6F /* futex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B92FDB4E1C985B5200CBFE6F /* futex.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +24,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B92FDB431C98594000CBFE6F /* Atomic-mutex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Atomic-mutex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B92FDB461C98594000CBFE6F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B92FDB4E1C985B5200CBFE6F /* futex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = futex.cpp; sourceTree = "<group>"; };
+		B92FDB4F1C985B5200CBFE6F /* futex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = futex.hpp; sourceTree = "<group>"; };
+		B9FFDC421C9886790027F3FE /* Atomic-mutex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Atomic-mutex"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,22 +45,16 @@
 			isa = PBXGroup;
 			children = (
 				B92FDB451C98594000CBFE6F /* Atomic-mutex */,
-				B92FDB441C98594000CBFE6F /* Products */,
+				B9FFDC421C9886790027F3FE /* Atomic-mutex */,
 			);
-			sourceTree = "<group>";
-		};
-		B92FDB441C98594000CBFE6F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B92FDB431C98594000CBFE6F /* Atomic-mutex */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		B92FDB451C98594000CBFE6F /* Atomic-mutex */ = {
 			isa = PBXGroup;
 			children = (
 				B92FDB461C98594000CBFE6F /* main.cpp */,
+				B92FDB4E1C985B5200CBFE6F /* futex.cpp */,
+				B92FDB4F1C985B5200CBFE6F /* futex.hpp */,
 			);
 			path = "Atomic-mutex";
 			sourceTree = "<group>";
@@ -79,7 +76,7 @@
 			);
 			name = "Atomic-mutex";
 			productName = "Atomic-mutex";
-			productReference = B92FDB431C98594000CBFE6F /* Atomic-mutex */;
+			productReference = B9FFDC421C9886790027F3FE /* Atomic-mutex */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -104,7 +101,7 @@
 				en,
 			);
 			mainGroup = B92FDB3A1C98594000CBFE6F;
-			productRefGroup = B92FDB441C98594000CBFE6F /* Products */;
+			productRefGroup = B92FDB3A1C98594000CBFE6F;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -118,6 +115,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B92FDB501C985B5200CBFE6F /* futex.cpp in Sources */,
 				B92FDB471C98594000CBFE6F /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -237,6 +235,7 @@
 				B92FDB4C1C98594000CBFE6F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

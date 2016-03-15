@@ -23,6 +23,7 @@ void work(int l, int r, double* sum, vector <double>* data, shared_ptr<mutex> mt
     }
 
     lock_guard<mutex> g(*mtp);
+    cout<<std::this_thread::get_id() <<endl;
     *sum += part;
 }
 
@@ -60,7 +61,7 @@ int main() {
     cout.precision(10);
     cout << "realSum: " << realSum << endl;
 
-    for(int i = 1; i <= MAX_THREAD; ++i) {
+    for(int i = MAX_THREAD; i <= MAX_THREAD; ++i) {
 
         std::chrono::time_point<std::chrono::system_clock> start, end;
         start = std::chrono::system_clock::now();
@@ -75,3 +76,5 @@ int main() {
 }
 
 //-std=c++11
+//g++ -std=c++11 tsimplesum.cpp -o tsimplesum
+
