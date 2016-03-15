@@ -28,6 +28,7 @@
 		B92FDB4E1C985B5200CBFE6F /* futex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = futex.cpp; sourceTree = "<group>"; };
 		B92FDB4F1C985B5200CBFE6F /* futex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = futex.hpp; sourceTree = "<group>"; };
 		B9FFDC421C9886790027F3FE /* Atomic-mutex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Atomic-mutex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9FFDC451C98D3B00027F3FE /* out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = out.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +56,7 @@
 				B92FDB461C98594000CBFE6F /* main.cpp */,
 				B92FDB4E1C985B5200CBFE6F /* futex.cpp */,
 				B92FDB4F1C985B5200CBFE6F /* futex.hpp */,
+				B9FFDC451C98D3B00027F3FE /* out.txt */,
 			);
 			path = "Atomic-mutex";
 			sourceTree = "<group>";
