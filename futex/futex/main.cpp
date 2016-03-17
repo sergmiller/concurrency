@@ -90,12 +90,11 @@ void case1() {
     test_increment_to_limit<futex>(LIMIT_10_SEC, MAX_THREADS);
     std::cout << "test std::mutex:" << std::endl;
     test_increment_to_limit<std::mutex>(LIMIT_10_SEC, MAX_THREADS);
-
 }
-
 
 int main(int argc, const char * argv[]) {
     //case1();
+    //case2();
     return 0;
 }
 
