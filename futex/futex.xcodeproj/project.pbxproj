@@ -28,6 +28,7 @@
 		B9FE19581C9AD16600D85383 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B9FE195F1C9AD33700D85383 /* futex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = futex.cpp; sourceTree = "<group>"; };
 		B9FE19601C9AD33700D85383 /* futex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = futex.hpp; sourceTree = "<group>"; };
+		B9FE19621C9AE21700D85383 /* out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = out.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 				B9FE19581C9AD16600D85383 /* main.cpp */,
 				B9FE195F1C9AD33700D85383 /* futex.cpp */,
 				B9FE19601C9AD33700D85383 /* futex.hpp */,
+				B9FE19621C9AE21700D85383 /* out.txt */,
 			);
 			path = futex;
 			sourceTree = "<group>";

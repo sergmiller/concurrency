@@ -1,0 +1,48 @@
+test futex:
+hardware_concurrency = 4
+limit = 10000000
+threads: 1 time: 8477 ms
+threads: 2 time: 7616 ms
+threads: 3 time: 9574 ms
+threads: 4 time: 9990 ms
+threads: 5 time: 15957 ms
+threads: 6 time: 15954 ms
+threads: 7 time: 16055 ms
+threads: 8 time: 16082 ms
+threads: 9 time: 16048 ms
+threads: 10 time: 16095 ms
+threads: 11 time: 16106 ms
+threads: 12 time: 16113 ms
+threads: 13 time: 16089 ms
+threads: 14 time: 16071 ms
+threads: 15 time: 16077 ms
+threads: 16 time: 16111 ms
+threads: 17 time: 16085 ms
+threads: 18 time: 16017 ms
+threads: 19 time: 16120 ms
+threads: 20 time: 16078 ms
+
+test std::mutex:
+hardware_concurrency = 4
+limit = 10000000
+threads: 1 time: 257 ms
+threads: 2 time: 30300 ms
+threads: 3 time: 32381 ms
+threads: 4 time: 32552 ms
+threads: 5 time: 32238 ms
+threads: 6 time: 32648 ms
+threads: 7 time: 33534 ms
+threads: 8 time: 32656 ms
+threads: 9 time: 32231 ms
+threads: 10 time: 32122 ms
+threads: 11 time: 31407 ms
+threads: 12 time: 30766 ms
+threads: 13 time: 30944 ms
+threads: 14 time: 31309 ms
+threads: 15 time: 31522 ms
+threads: 16 time: 30734 ms
+threads: 17 time: 31058 ms
+threads: 18 time: 32260 ms
+threads: 19 time: 31419 ms
+threads: 20 time: 30905 ms
+
