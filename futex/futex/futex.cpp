@@ -10,9 +10,7 @@
 #include <iostream>
 #include <sstream>
 
-futex::futex(){
-    _locked_thread_id = -1;
-}
+futex::futex(): _locked_thread_id(-1){}
 
 //dummy!!!
 int futex::_get_thread_id() {

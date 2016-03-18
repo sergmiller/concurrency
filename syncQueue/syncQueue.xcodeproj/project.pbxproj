@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B9FE19701C9B156D00D85383 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9FE196F1C9B156D00D85383 /* main.cpp */; };
+		B9FE197B1C9B703300D85383 /* futex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9FE197A1C9B703300D85383 /* futex.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,9 @@
 /* Begin PBXFileReference section */
 		B9FE196C1C9B156D00D85383 /* syncQueue */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = syncQueue; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9FE196F1C9B156D00D85383 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B9FE19771C9B172500D85383 /* syncqueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = syncqueue.hpp; sourceTree = "<group>"; };
+		B9FE19791C9B703300D85383 /* futex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = futex.hpp; path = ../../futex/futex/futex.hpp; sourceTree = "<group>"; };
+		B9FE197A1C9B703300D85383 /* futex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = futex.cpp; path = ../../futex/futex/futex.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +61,10 @@
 		B9FE196E1C9B156D00D85383 /* syncQueue */ = {
 			isa = PBXGroup;
 			children = (
+				B9FE19791C9B703300D85383 /* futex.hpp */,
+				B9FE197A1C9B703300D85383 /* futex.cpp */,
 				B9FE196F1C9B156D00D85383 /* main.cpp */,
+				B9FE19771C9B172500D85383 /* syncqueue.hpp */,
 			);
 			path = syncQueue;
 			sourceTree = "<group>";
@@ -119,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9FE19701C9B156D00D85383 /* main.cpp in Sources */,
+				B9FE197B1C9B703300D85383 /* futex.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
