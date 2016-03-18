@@ -31,12 +31,13 @@ public:
     virtual int64_t size() = 0;
 };
 
-template <class T, class M = std::mutex>
+template <class T>
 class SyncQueue : public iConcurrencyQueue<T>{
 private:
     std::queue <T> _queue;
-    M _sync;
-    M _queue_locker;
+    std::mutex _sync;
+    std::mutex _queue_locker;
+    std::condition_variable _cond_empty;
 public:
     int64_t size() {
         return _queue.size();
@@ -55,23 +56,38 @@ public:
     }
     
     void push(const T& value) {
-        std::lock_guard<M> guard(_sync);
+        std::lock_guard<std::mutex> guard(_sync);
         _queue.push(value);
+        _cond_empty.notify_one();
     }
     
     void pop() {
-        std::lock_guard<M> guard(_sync);
+        std::unique_lock<std::mutex> lock_pop(_sync);
+        
+        while (empty()) {
+            _cond_empty.wait(lock_pop);
+        }
+        
         _queue.pop();
     }
     
-    
     const T& front() {
-        std::lock_guard<M> guard(_sync);
+        std::unique_lock<std::mutex> lock_pop(_sync);
+        
+        while (empty()) {
+            _cond_empty.wait(lock_pop);
+        }
+        
         return _queue.front();
     }
     
     const T& back() {
-        std::lock_guard<M> guard(_sync);
+        std::unique_lock<std::mutex> lock_pop(_sync);
+        
+        while (empty()) {
+            _cond_empty.wait(lock_pop);
+        }
+        
         return _queue.back();
     }
 };

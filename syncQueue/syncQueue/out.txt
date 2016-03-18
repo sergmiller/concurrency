@@ -1,0 +1,8 @@
+TEST: push & pop,   threads = 2 OK time: 487 ms
+TEST: push & count, threads = 2 OK time: 560 ms
+TEST: push & pop,   threads = 4 OK time: 1314 ms
+TEST: push & count, threads = 4 OK time: 1666 ms
+TEST: push & pop,   threads = 8 OK time: 2677 ms
+TEST: push & count, threads = 8 OK time: 2863 ms
+TEST: push & pop,   threads = 16 OK time: 5689 ms
+TEST: push & count, threads = 16 OK time: 5549 ms

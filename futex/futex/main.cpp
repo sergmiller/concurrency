@@ -23,22 +23,20 @@
 #include "futex.hpp"
 
 #define MAX_THREADS 20
-#define LIMIT_10_SEC (int)1e7
+#define LIMIT_10_SEC (int)1e4
 
 int hardware_concurrency;
 
 template <class M>
 void inc(M* mutex, int64_t limit, int64_t* sum, int64_t* thr_cnt) {
     while(1) {
-        mutex->lock();
+        std::lock_guard<M> g(*mutex);
         if(*sum < limit) {
             ++*sum;
             ++*thr_cnt;
         } else {
-            mutex->unlock();
             return;
         }
-        mutex->unlock();
     }
 }
 
@@ -93,7 +91,7 @@ void case1() {
 }
 
 int main(int argc, const char * argv[]) {
-    //case1();
+    case1();
     //case2();
     return 0;
 }

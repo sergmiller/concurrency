@@ -13,89 +13,83 @@
 #include <vector>
 #include <random>
 #include "syncqueue.hpp"
-#include "futex.hpp"
 
 #define TEST_SIZE (int64_t)1e5
 
-std::default_random_engine generator;
-std::uniform_int_distribution<int64_t> distribution(-(int64_t)1e9,(int64_t)1e9);
-
-std::default_random_engine generator_bool;
-std::uniform_int_distribution<int> distribution_bool(0, 1);
-
-template <class M>
-void work(int64_t* control_sum, std::vector <int64_t>* values, std::vector <bool>* operations,     SyncQueue<int64_t, M>* queue) {
-    int j = 0;
-    for(int i =0;i < operations->size(); ++i) {
-        if((*operations)[i]) {
-            queue->push((*values)[j]);
-            ++j;
-        } else {
-            queue->lock();
-            while(queue->empty()) {
-                std::this_thread::yield();
-            }
-            int64_t val = queue->front();
-            control_sum -= val;
-            queue->pop();
-            queue->unlock();
-        }
+void _reader(int64_t size, std::shared_ptr<SyncQueue<int64_t> > queue) {
+    for(int i = 0;i < size; ++i) {
+        queue->pop();
     }
 }
 
-template <class M>
-void case1(int THREAD_NUMB) {
-    SyncQueue<int64_t, M> queue;
-    std::vector<std:: vector <int64_t> > data(THREAD_NUMB, std::vector<int64_t>());
-    std::vector<std:: vector <bool> > action(THREAD_NUMB, std::vector<bool>());
-    int64_t control_sum = 0;
-    int balance = 0;
-    for(int i = 0;i < TEST_SIZE; ++i) {
-        bool act = (i/TEST_SIZE < 0.7);
-        if(act) {
-            int64_t next_val = distribution(generator);
-            data[i % THREAD_NUMB].push_back(next_val);
-            control_sum += next_val;
-        }
-        
-        balance += (act ? 1 : -1);
-        action[i % THREAD_NUMB].push_back(act);
+void _counter(int64_t size, std::shared_ptr<SyncQueue<int64_t> > queue, std::shared_ptr<int64_t> sum) {
+    for(int i = 0;i < size; ++i) {
+        std::lock_guard<SyncQueue<int64_t> > g(*queue);
+        *sum -= queue->front();
+        queue->pop();
     }
+}
+
+void _writer(int64_t size, std::shared_ptr<SyncQueue<int64_t> > queue) {
+    for(int i = 0;i < size; ++i) {
+        queue->push(i);
+    }
+}
+
+
+void case1(int THREAD_NUMB) {
+    std::cout << "TEST: push & pop,   threads = " << THREAD_NUMB << " ";
+    std::shared_ptr <SyncQueue<int64_t> > queue(new SyncQueue<int64_t>);
     
     std::vector <std::thread> vt;
     
-    
-    
-    for(int i =0;i < THREAD_NUMB; ++i) {
-        vt.push_back(std::thread(work<M>,&control_sum, &data[i], &action[i], &queue));
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
+    for(int i = 0;i < THREAD_NUMB; ++i) {
+        vt.push_back(std::thread((i < THREAD_NUMB/2 ? _reader : _writer), TEST_SIZE, queue));
     }
-    
-    
-    while(balance--) {
-        queue.lock();
-        while(queue.empty()) {
-            std::this_thread::yield();
-        }
-        control_sum -= queue.front();
-        queue.pop();
-        queue.unlock();
-    }
-
-
     
     for(auto& t : vt) {
         t.join();
     }
     
-    assert(queue.empty() && !control_sum);
+    end = std::chrono::system_clock::now();
+    assert(queue->empty());
+    
+    std::cout << "OK";
+    int64_t elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
+    std::cout <<" time: " << elapsed_milliseconds << " ms" << std::endl;
+    
+    std::cout << "TEST: push & count, threads = " << THREAD_NUMB << " ";
+    
+    vt.clear();
+    
+    start = std::chrono::system_clock::now();
+    
+    std::shared_ptr<int64_t> sum(new int64_t);
+    *sum = (THREAD_NUMB/2)*((TEST_SIZE - 1)*(TEST_SIZE))/2;
+    
+    for(int i = 0;i < THREAD_NUMB; ++i) {
+        vt.push_back((i < THREAD_NUMB/2 ? std::thread(_counter,TEST_SIZE, queue, sum) : std::thread(_writer,TEST_SIZE, queue)));
+    }
+    
+    for(auto& t : vt) {
+        t.join();
+    }
+    
+    end = std::chrono::system_clock::now();
+    assert(queue->empty() && !*sum);
+    
+    std::cout << "OK";
+    elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
+    std::cout <<" time: " << elapsed_milliseconds << " ms" << std::endl;
 }
 
 int main(int argc, const char * argv[]) {
-    case1<std::mutex>(1);
-    case1<futex>(1);
-    case1<std::mutex>(4);
-    case1<futex>(4);
-    case1<std::mutex>(8);
-    case1<futex>(8);
+    //freopen("out.txt", "w", stdout);
+    case1(2);
+    case1(4);
+    case1(8);
+    case1(16);
     return 0;
 }
