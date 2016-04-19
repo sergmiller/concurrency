@@ -30,12 +30,12 @@ void futex::lock(int id) {
 bool futex::try_lock(int id) {
     int thread_id = (id == -1 ? _get_thread_id() : id);
     int empty;
-    return _locked_thread_id.compare_exchange_weak(empty = -1,thread_id);
+    return _locked_thread_id.compare_exchange_strong(empty = -1,thread_id);
 }
 
 void futex::unlock(int id) {
     int thread_id = (id == -1 ? _get_thread_id() : id);
-    if(!_locked_thread_id.compare_exchange_weak(thread_id,-1)) {
+    if(!_locked_thread_id.compare_exchange_strong(thread_id,-1)) {
         throw new BadCallUnlockException();
     }
 }
