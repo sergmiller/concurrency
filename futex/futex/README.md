@@ -5,7 +5,7 @@
 a) futex для volatile переменных(futex_with_memory_barriers_weak):
 
 Так как компилятору и процессору запрещено проводить любые оптимизации связанные с volatile-данными, 
-то для корректной работы можно установить минимально возможный барьер: std::memory_order_relaxed.
+то для корректной работы можно установить минимально возможные барьеры: std::memory_order_relaxed.
 
 б) futex для обычных переменных(futex_with_memory_barriers_strong):
 
