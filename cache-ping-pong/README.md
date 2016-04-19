@@ -1,3 +1,5 @@
+4.2
+
 with cache ping-pong: 7344
 
 without cache ping-pong: 2386
