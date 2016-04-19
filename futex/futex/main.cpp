@@ -6,14 +6,6 @@
 //  Copyright © 2016 Serg Miller. All rights reserved.
 //
 
-//
-//  main.cpp
-//  mipt-concurrency
-//
-//  Created by Сергей Миллер on 15.03.16.
-//  Copyright © 2016 Serg Miller. All rights reserved.
-//
-
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -21,11 +13,11 @@
 #include <chrono>
 #include <mutex>
 #include "futex.hpp"
+#include "futex_with_memory_barriers.hpp"
 
-#define MAX_THREADS 20
-#define LIMIT_10_SEC (int)1e4
+#define MAX_THREADS 10
+#define LIMIT (int)1e5
 
-int hardware_concurrency;
 
 template <class M>
 void inc(M* mutex, int64_t limit, int64_t* sum, int64_t* thr_cnt) {
@@ -67,7 +59,6 @@ void test_inc(int64_t limit, int thread_numb) {
 template<class M>
 void test_increment_to_limit(int limit, int thread_numb) {
 
-    std::cout << "hardware_concurrency = " << hardware_concurrency << std::endl;
     std::cout << "limit = " << limit << std::endl;
    
     std::chrono::time_point<std::chrono::system_clock> start, end;
@@ -83,11 +74,15 @@ void test_increment_to_limit(int limit, int thread_numb) {
 
 void case1() {
     //std::freopen("out.txt","w", stdout);
-    hardware_concurrency = std::thread::hardware_concurrency();
-    std::cout << "test futex:" << std::endl;
-    test_increment_to_limit<futex>(LIMIT_10_SEC, MAX_THREADS);
+    std::cout << "hardware_concurrency = " << std::thread::hardware_concurrency() << std::endl;
+    std::cout << "test simple futex:" << std::endl;
+    test_increment_to_limit<futex>(LIMIT, MAX_THREADS);
+    std::cout << "test futex with memory barriers for volatile(weak):" << std::endl;
+    test_increment_to_limit<futex_with_memory_barriers_weak>(LIMIT, MAX_THREADS);
+    std::cout << "test futex with memory barriers for not volatile(strong):" << std::endl;
+    test_increment_to_limit<futex_with_memory_barriers_strong>(LIMIT, MAX_THREADS);
     std::cout << "test std::mutex:" << std::endl;
-    test_increment_to_limit<std::mutex>(LIMIT_10_SEC, MAX_THREADS);
+    test_increment_to_limit<std::mutex>(LIMIT, MAX_THREADS);
 }
 
 int main(int argc, const char * argv[]) {
