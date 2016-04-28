@@ -14,9 +14,8 @@ futex::futex(): _locked_thread_id(-1){}
 
 //dummy!!!
 int futex::_get_thread_id() {
-    std::stringstream ss;
-    ss << std::this_thread::get_id();
-    return (int32_t)std::stoll(ss.str(), nullptr, 16);
+    std::thread::id thread_id = std::this_thread::get_id();
+    return *((int *)(&thread_id));
 }
 
 void futex::lock(int id) {

@@ -16,7 +16,7 @@
 #include "futex_with_memory_barriers.hpp"
 
 #define MAX_THREADS 10
-#define LIMIT (int)1e5
+#define LIMIT (int)3e8
 
 
 template <class M>
@@ -34,11 +34,13 @@ void inc(M* mutex, int64_t limit, int64_t* sum, int64_t* thr_cnt) {
 
 
 template <class M>
-void test_inc(int64_t limit, int thread_numb) {
+int64_t test_inc(int64_t limit, int thread_numb) {
     M mutex;
     int64_t sum = 0;
     std::vector <int64_t> counters(thread_numb,0);
     std::vector <std::thread> vt;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
     for(int i = 0; i < thread_numb; ++i) {
         vt.push_back(std::thread(inc<M>,&mutex,limit, &sum, &counters[i]));
     }
@@ -47,13 +49,18 @@ void test_inc(int64_t limit, int thread_numb) {
         t.join();
     }
     
-    assert(sum == limit);
+    end = std::chrono::system_clock::now();
+    int64_t elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
+
     
-    for(int i = 0;i < thread_numb;++i) {
-        sum -= counters[i];
-    }
-    
-    assert(sum == 0);
+//    assert(sum == limit);
+//    
+//    for(int i = 0;i < thread_numb;++i) {
+//        sum -= counters[i];
+//    }
+//    
+//    assert(sum == 0);
+    return elapsed_milliseconds;
 };
 
 template<class M>
@@ -61,14 +68,11 @@ void test_increment_to_limit(int limit, int thread_numb) {
 
     std::cout << "limit = " << limit << std::endl;
    
-    std::chrono::time_point<std::chrono::system_clock> start, end;
-    for (int i = 1;i <= thread_numb; ++i) {
-        start = std::chrono::system_clock::now();
-        test_inc<M>(limit, i);
-        end = std::chrono::system_clock::now();
-        int64_t elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
-        std::cout << "threads: " << i << " time: " << elapsed_milliseconds << " ms" << std::endl;
-    }
+   //    for (int i = 1;i <= thread_numb; ++i) {
+    int i = 4;
+        int64_t elapsed_milliseconds = test_inc<M>(limit, i);
+                std::cout << "threads: " << i << " time: " << elapsed_milliseconds/1000 << " s" << std::endl;
+//    }
     std::cout << std::endl;
 }
 
@@ -77,17 +81,14 @@ void case1() {
     std::cout << "hardware_concurrency = " << std::thread::hardware_concurrency() << std::endl;
     std::cout << "test simple futex:" << std::endl;
     test_increment_to_limit<futex>(LIMIT, MAX_THREADS);
-    std::cout << "test futex with memory barriers for volatile(weak):" << std::endl;
-    test_increment_to_limit<futex_with_memory_barriers_weak>(LIMIT, MAX_THREADS);
     std::cout << "test futex with memory barriers for not volatile(strong):" << std::endl;
     test_increment_to_limit<futex_with_memory_barriers_strong>(LIMIT, MAX_THREADS);
-    std::cout << "test std::mutex:" << std::endl;
-    test_increment_to_limit<std::mutex>(LIMIT, MAX_THREADS);
+    std::cout << "test futex with memory barriers for volatile(weak):" << std::endl;
+    test_increment_to_limit<futex_with_memory_barriers_weak>(LIMIT, MAX_THREADS);
 }
 
 int main(int argc, const char * argv[]) {
     case1();
-    //case2();
     return 0;
 }
 

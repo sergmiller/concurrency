@@ -14,9 +14,11 @@ futex_with_memory_barriers_weak::futex_with_memory_barriers_weak(): _locked_thre
 
 //dummy!!!
 int futex_with_memory_barriers_weak::_get_thread_id() {
-    std::stringstream ss;
-    ss << std::this_thread::get_id();
-    return (int32_t)std::stoll(ss.str(), nullptr, 16);
+//    std::stringstream ss;
+//    ss << std::this_thread::get_id();
+//    return (int32_t)std::stoll(ss.str(), nullptr, 16);
+    std::thread::id thread_id = std::this_thread::get_id();
+    return *((int *)(&thread_id));
 }
 
 void futex_with_memory_barriers_weak::lock(int id) {
@@ -44,9 +46,11 @@ futex_with_memory_barriers_strong::futex_with_memory_barriers_strong(): _locked_
 
 //dummy!!!
 int futex_with_memory_barriers_strong::_get_thread_id() {
-    std::stringstream ss;
-    ss << std::this_thread::get_id();
-    return (int32_t)std::stoll(ss.str(), nullptr, 16);
+//    std::stringstream ss;
+//    ss << std::this_thread::get_id();
+//    return (int32_t)std::stoll(ss.str(), nullptr, 16);
+    std::thread::id thread_id = std::this_thread::get_id();
+    return *((int *)(&thread_id));
 }
 
 void futex_with_memory_barriers_strong::lock(int id) {
